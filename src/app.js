@@ -1,18 +1,16 @@
 import express from 'express';
+import api from './api/index.js';
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+app.use('/public', express.static('public'));
 
 app.get('/', (req, res) => {
-  res.send('Server is working!');
+  res.send('Welcome to my REST API');
 });
 
+app.use('/api/v1', api);
 
-
-import catRoutes from './api/routes/catRoutes.js';
-import userRoutes from './api/routes/userRoutes.js';
-
-app.use('/api/v1/cat', catRoutes);
-app.use('/api/v1/user', userRoutes);
-
-export default app
+export default app;
