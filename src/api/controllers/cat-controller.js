@@ -1,4 +1,4 @@
-import { addCat, findCatById, listAllCats, updateCat, removeCat } from '../models/cat-model.js';
+import { addCat, findCatById, listAllCats, updateCat, removeCat, findCatsByUser } from '../models/cat-model.js';
 
 const getCat = (req, res) => {
   res.json(listAllCats());
@@ -13,15 +13,28 @@ const getCatById = (req, res) => {
   }
 };
 
-const postCat = (req, res) => {
-  const result = addCat(req.body);
-  if (result.cat_id) {
-    res.status(201).json({ message: 'New cat added.', result });
-  } else {
-    res.sendStatus(400);
+const postCat = async (req, res) => {
+  try {
+    // Проверка обязательных полей
+    if (!req.body.cat_name || !req.body.owner) {
+      return res.status(400).json({ error: "Не указано имя кота или владелец" });
+    }
+
+    const catData = {
+      cat_name: req.body.cat_name,
+      owner: req.body.owner,
+      weight: req.body.weight || null, // если не указан - будет null
+      birthdate: req.body.birthdate || null,
+      filename: req.file?.filename // имя файла из multer
+    };
+
+    const result = await addCat(catData);
+    res.status(201).json(result);
+  } catch (error) {
+    console.error('Ошибка при добавлении кота:', error);
+    res.status(500).json({ error: error.message });
   }
 };
-
 const putCat = (req, res) => {
   const catId = req.params.id;
   const updatedData = req.body;
@@ -52,4 +65,18 @@ const deleteCat = (req, res) => {
   }
 };
 
-export { getCat, getCatById, postCat, putCat, deleteCat };
+
+const getCatsByUser = async (req, res) => {
+  try {
+    const cats = await findCatsByUser(req.params.id);
+    if (cats.length === 0) {
+      return res.status(404).json({ message: 'No cats found for this owner' });
+    }
+    res.json(cats);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+export { getCat, getCatById, postCat, putCat, deleteCat, getCatsByUser };
