@@ -22,33 +22,40 @@ const getUserById = (req, res) => {
   }
 };
 
-const postUser = async (req, res) => {
-  req.body.password = bcrypt.hashSync(req.body.password, 10);
-  const result = await addUser(req.body);
-  if (result.user_id) {
-    res.status(201);
-    res.json(result);
-  } else {
-    res.sendStatus(400);
+const postUser = async (req, res, next) => {
+  try {
+    req.body.password = bcrypt.hashSync(req.body.password, 10);
+    const result = await addUser(req.body);
+    if (result.user_id) {
+      res.status(201).json(result);
+    } else {
+      const error = new Error('Failed to create user');
+      error.status = 400;
+      throw error;
+    }
+  } catch (error) {
+    next(error);
   }
 };
 
-const putUser = (req, res) => {
+const putUser = async (req, res, next) => {
   const userId = req.params.id;
   const updatedData = req.body;
 
   try {
-    const updatedUser = updateUser(userId, updatedData);
+    const updatedUser = await updateUser(userId, updatedData);
     if (updatedUser) {
       res.json({
         message: 'User updated successfully.',
-        user: updatedUser
+        user: updatedUser,
       });
     } else {
-      res.status(404).json({ error: 'User not found' });
+      const error = new Error('User not found');
+      error.status = 404;
+      throw error;
     }
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error);
   }
 };
 

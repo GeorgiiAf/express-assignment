@@ -1,6 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import api from './api/index.js';
+import errorHandler from './middlewares/error-handler.js';
+import notFoundHandler from './middlewares/error-handler.js';
+
+
 
 const app = express();
 
@@ -13,6 +17,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(notFoundHandler);
+app.use(errorHandler);
+
 
 app.options('*', cors(corsOptions));
 app.use(express.json());
@@ -25,5 +32,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1', api);
+app.use(errorHandler);
 
 export default app;

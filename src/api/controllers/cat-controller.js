@@ -1,5 +1,7 @@
 import { addCat, findCatById, listAllCats, updateCat, removeCat, findCatsByUser } from '../models/cat-model.js';
 
+
+
 const getCat = (req, res) => {
   res.json(listAllCats());
 };
