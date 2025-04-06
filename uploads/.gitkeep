@@ -1,0 +1,4 @@
+# ignore content of uploads folder
+uploads/*
+# except one
+!uploads/.gitkeep

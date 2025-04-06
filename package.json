@@ -1,16 +1,24 @@
 {
-  "name": "wsk-25-express",
+  "name": "wsk-express",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nealukumies/WSK-express.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nealukumies/WSK-express/issues"
+  },
+  "homepage": "https://github.com/nealukumies/WSK-express#readme",
   "devDependencies": {
     "@eslint/js": "^9.23.0",
     "eslint": "^9.23.0",
@@ -27,6 +35,6 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.2",
     "mysql2": "^3.14.0",
-    "sharp": "^0.32.6"
+    "sharp": "^0.33.5"
   }
 }
