@@ -15,53 +15,55 @@ const getCatById = (req, res) => {
 
 const postCat = async (req, res) => {
   try {
-    // Проверка обязательных полей
     if (!req.body.cat_name || !req.body.owner) {
-      return res.status(400).json({ error: "Не указано имя кота или владелец" });
+      return res.status(400).json({ error: "Cat name or owner is not specified" });
     }
 
     const catData = {
       cat_name: req.body.cat_name,
       owner: req.body.owner,
-      weight: req.body.weight || null, // если не указан - будет null
+      weight: req.body.weight || null,
       birthdate: req.body.birthdate || null,
-      filename: req.file?.filename // имя файла из multer
+      filename: req.file?.filename
     };
 
     const result = await addCat(catData);
     res.status(201).json(result);
   } catch (error) {
-    console.error('Ошибка при добавлении кота:', error);
+    console.error('error while added cat:', error);
     res.status(500).json({ error: error.message });
   }
 };
-const putCat = (req, res) => {
-  const catId = req.params.id;
-  const updatedData = req.body;
-
+const putCat = async (req, res) => {
   try {
-    const updatedCat = updateCat(catId, updatedData);
-    if (updatedCat) {
-      res.json({
-        message: 'Cat updated successfully.',
-        cat: updatedCat
-      });
-    } else {
-      res.status(404).json({ error: 'Cat not found' });
-    }
+    const success = await updateCat(
+      req.params.id,
+      req.body,
+      req.user.user_id,
+      req.user.role
+    );
+
+    success
+      ? res.json({ message: 'Cat updated' })
+      : res.status(403).json({ message: 'Update forbidden' });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-const deleteCat = (req, res) => {
-  const catId = req.params.id;
-  const isDeleted = removeCat(catId);
+const deleteCat = async (req, res) => {
+  try {
+    const success = await removeCat(
+      req.params.id,
+      req.user.user_id,
+      req.user.role
+    );
 
-  if (isDeleted) {
-    res.json({ message: 'Cat deleted successfully.' });
-  } else {
-    res.status(404).json({ error: 'Cat not found' });
+    success
+      ? res.json({ message: 'Cat deleted' })
+      : res.status(403).json({ message: 'Deletion forbidden' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 

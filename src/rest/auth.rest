@@ -1,0 +1,30 @@
+### Login oikealla salasanalla
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "juha",
+  "password": "salasana"
+}
+
+### Login väärällä salasanalla
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "juha",
+  "password": "salasana-väärä"
+}
+
+### Post login
+POST http://localhost:3000/api/v1/auth/login
+content-type: application/json
+
+{
+  "username": "JohnDoe",
+  "password": "to-be-hashed-pw1"
+}
+
+### Get my user info
+GET http://localhost:3000/api/v1/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0MSwibmFtZSI6ImpvaG4iLCJ1c2VybmFtZSI6IkpvaG5Eb2UiLCJlbWFpbCI6Imp1aGEuZG9lQG1ldHJvcG9saWEuZmkiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0Mzg3MTAxOCwiZXhwIjoxNzQzOTU3NDE4fQ.shrsSnQ6i2d6RtuJpQWsmeUCtSELC6r8E1GDGXW9rN8

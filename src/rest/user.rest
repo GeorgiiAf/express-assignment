@@ -1,0 +1,23 @@
+POST http://localhost:3000/api/v1/users
+Content-Type: application/json
+
+{
+  "name": "Juha",
+  "username": "Juha",
+  "password": "salasana",
+  "email": "juha.tauriainen@metropolia.fi"
+}
+
+### Post login johndoe
+POST http://localhost:3000/api/v1/users
+Content-Type: application/json
+
+{
+  "name": "john",
+  "username": "JohnDoe",
+  "password": "to-be-hashed-pw1",
+  "email": "juha.doe@metropolia.fi"
+}
+
+
+
